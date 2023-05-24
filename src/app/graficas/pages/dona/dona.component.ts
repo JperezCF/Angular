@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChartData, ChartEvent, ChartType } from 'chart.js';
+import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 
 @Component({
   selector: 'app-dona',
@@ -8,25 +8,72 @@ import { ChartData, ChartEvent, ChartType } from 'chart.js';
 })
 export class DonaComponent implements OnInit {
 
+  doughnutData = {
+    "MetricsReportsState":
+    [
+      {
+        "label":"Efectiva",
+        "value":545
+      },
+      {
+        "label":"Repetida",
+        "value":544
+      },
+      {
+        "label":"Sin información",
+        "value":94
+      },
+      {
+        "label":"VIN inválido",
+        "value":3
+    }
+    ]
+  
+  }
+  doughnutValue: number[]  = [];
+  doughnutlabel: String[]  = [];
+  doughnutChartData: ChartData<'doughnut'> | undefined;
+  doughnutChartType: ChartType = 'doughnut';
+  doughnutChartOptions: ChartConfiguration['options'];
+  
+
   constructor() { }
 
+  // Doughnut
   ngOnInit(): void {
+
+  this.getGraphs();
+    
   }
-    // Doughnut
-    public doughnutChartLabels: string[] = [ 'Download Sales', 'In-Store Sales', 'Mail-Order Sales' ];
-    public doughnutChartData: ChartData<'doughnut'> = {
-      labels: this.doughnutChartLabels,
+  
+
+
+  getGraphs(){
+
+    this.doughnutChartOptions = {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: true,
+          text: 'Chart.js Doughnut Chart'
+        }
+      }
+    }
+    this.doughnutChartData = {
+      labels: this.doughnutlabel,
       datasets: [
-        { data: [ 350, 450, 100 ], backgroundColor: ['#ED0CF6', '#6100EB', '#0C29F6'] },
+        { data: [], backgroundColor: ['#ED0CF6', '#6100EB', '#0C29F6'] },
       ]
     };
-    public doughnutChartType: ChartType = 'doughnut';
-  
-    // events
-    public chartClicked({ event, active }: { event: ChartEvent, active: {}[] }): void {
-      console.log(event, active);
-    }
-  
     
+    this.doughnutData.MetricsReportsState.forEach((element) => {
+      this.doughnutlabel.push(element.label);      
+      this.doughnutValue.push( element.value);
 
+    });
+    this.doughnutChartData.datasets[0].data = this.doughnutValue;
+  }
 }

@@ -10,7 +10,7 @@ export class GraficasService {
   constructor( private http: HttpClient) { }
 
   getUsuariosRedesSociales(){
-    return this.http.get('http://localhost:3000/grafica');
+    return this.http.get('http://localhost:3000/MetricsReportsPerDate');
   }
 
   getUsuariosRedesUsuariosDonaData() {
